@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@rpeak/domain": "*",
+    "@rpeak/mcp": "*",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.110.0",
     "clsx": "^2.1.1",
