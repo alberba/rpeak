@@ -6,6 +6,8 @@ import { getRepositories } from "@/server/repositories";
 import { PlanForm } from "@/components/plans/plan-form";
 import { updatePlanAction, deletePlanAction } from "@/app/planes/actions";
 import { buttonClasses } from "@/components/ui/button";
+import { MuscleMap } from "@/components/muscles/muscle-map";
+import { planMuscleIntensity } from "@/lib/muscle-load";
 
 export default async function PlanDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,6 +21,7 @@ export default async function PlanDetailPage({ params }: { params: Promise<{ id:
   const initialExercises = Object.fromEntries(
     resolved.filter((e): e is Exercise => e !== null).map((e) => [e.id, { id: e.id, name: e.name }]),
   );
+  const exerciseMap = new Map(resolved.filter((e): e is Exercise => e !== null).map((e) => [e.id, e]));
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6">
@@ -31,6 +34,12 @@ export default async function PlanDetailPage({ params }: { params: Promise<{ id:
           Empezar
         </Link>
       </header>
+
+      <MuscleMap
+        intensities={planMuscleIntensity(plan, exerciseMap)}
+        title="Distribución muscular del plan"
+        description="Calculada según las series previstas y el papel principal o secundario de cada músculo."
+      />
 
       <PlanForm
         initialValues={{ name: plan.name, description: plan.description, blocks: plan.blocks }}

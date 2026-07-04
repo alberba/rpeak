@@ -91,6 +91,28 @@ body {
   font-family: var(--font-sans);
 }
 
+.muscle-base { fill: oklch(0.87 0.004 260); }
+.dark .muscle-base { fill: oklch(0.35 0.006 260); }
+.muscle-fill-0 { fill: oklch(0.91 0.004 260); }
+.muscle-fill-1 { fill: oklch(0.88 0.07 255); }
+.muscle-fill-2 { fill: oklch(0.73 0.14 255); }
+.muscle-fill-3 { fill: oklch(0.57 0.2 258); }
+.muscle-fill-4 { fill: oklch(0.42 0.23 262); }
+.muscle-swatch-1 { background-color: oklch(0.88 0.07 255); }
+.muscle-swatch-2 { background-color: oklch(0.73 0.14 255); }
+.muscle-swatch-3 { background-color: oklch(0.57 0.2 258); }
+.muscle-swatch-4 { background-color: oklch(0.42 0.23 262); }
+
+.dark .muscle-fill-0 { fill: oklch(0.3 0.006 260); }
+.dark .muscle-fill-1 { fill: oklch(0.42 0.09 255); }
+.dark .muscle-fill-2 { fill: oklch(0.55 0.15 255); }
+.dark .muscle-fill-3 { fill: oklch(0.66 0.19 258); }
+.dark .muscle-fill-4 { fill: oklch(0.76 0.18 252); }
+.dark .muscle-swatch-1 { background-color: oklch(0.42 0.09 255); }
+.dark .muscle-swatch-2 { background-color: oklch(0.55 0.15 255); }
+.dark .muscle-swatch-3 { background-color: oklch(0.66 0.19 258); }
+.dark .muscle-swatch-4 { background-color: oklch(0.76 0.18 252); }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
