@@ -25,7 +25,7 @@ export default async function PlanDetailPage({ params }: { params: Promise<{ id:
       <header className="flex items-center justify-between gap-2">
         <div className="min-w-0">
           <p className="font-display text-2xl font-semibold">{plan.name}</p>
-          <p className="text-sm text-muted">Editar plan</p>
+          <p className="text-sm text-muted-foreground">Editar plan</p>
         </div>
         <Link href={`/entrenar?planId=${plan.id}`} className={buttonClasses("primary", "sm")}>
           Empezar

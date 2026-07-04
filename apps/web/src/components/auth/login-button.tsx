@@ -49,9 +49,9 @@ export function GoogleLoginButton() {
         </svg>
         {loading ? "Redirigiendo…" : "Continuar con Google"}
       </Button>
-      {!supabase ? <p className="text-center text-xs text-muted">Inicio de sesión con Google no disponible en este entorno.</p> : null}
+      {!supabase ? <p className="text-center text-xs text-muted-foreground">Inicio de sesión con Google no disponible en este entorno.</p> : null}
       {error ? (
-        <p role="alert" className="text-center text-xs text-danger">
+        <p role="alert" className="text-center text-xs text-destructive">
           {error}
         </p>
       ) : null}

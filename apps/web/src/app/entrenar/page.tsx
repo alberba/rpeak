@@ -18,13 +18,13 @@ export default async function StartWorkoutPage() {
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6">
       <header>
         <p className="font-display text-2xl font-semibold">Entrenar</p>
-        <p className="text-sm text-muted">Elige un plan o empieza un entrenamiento libre.</p>
+        <p className="text-sm text-muted-foreground">Elige un plan o empieza un entrenamiento libre.</p>
       </header>
 
       {inProgress ? (
-        <Surface className="flex items-center justify-between gap-3 border-accent bg-accent-tint/40">
+        <Surface className="flex items-center justify-between gap-3 border-primary/40 bg-primary/10">
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-accent-strong">Ya tienes un entrenamiento en curso</p>
+            <p className="text-sm font-semibold text-primary">Ya tienes un entrenamiento en curso</p>
             <p className="truncate text-sm text-foreground">{inProgress.name}</p>
           </div>
           <Link href={`/entrenar/${inProgress.id}`} className={buttonClasses("primary", "sm")}>
@@ -52,7 +52,7 @@ export default async function StartWorkoutPage() {
                     <Surface className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
                         <p className="truncate font-medium">{plan.name}</p>
-                        <p className="text-xs text-muted">{pluralize(plan.blocks.length, "bloque", "bloques")}</p>
+                        <p className="text-xs text-muted-foreground">{pluralize(plan.blocks.length, "bloque", "bloques")}</p>
                       </div>
                       <form action={startWorkoutFromPlanAction.bind(null, plan.id)}>
                         <button type="submit" className={buttonClasses("primary", "sm")}>

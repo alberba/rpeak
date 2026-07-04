@@ -38,15 +38,15 @@ export function RestTimer({
       role="timer"
       aria-live="polite"
       className={cn(
-        "flex flex-col items-center gap-3 rounded-xl border border-border bg-surface p-6",
-        state.isDone && "border-accent",
+        "flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6",
+        state.isDone && "border-primary/40",
       )}
     >
-      <p className="text-sm font-medium text-muted">Descanso</p>
+      <p className="text-sm font-medium text-muted-foreground">Descanso</p>
       <p
         className={cn(
           "font-mono text-5xl font-semibold tabular-nums",
-          state.isDone ? "text-accent" : "text-brand-strong",
+          state.isDone ? "text-primary" : "text-primary",
         )}
       >
         {state.isDone ? "Listo" : formatMMSS(state.remainingSec)}

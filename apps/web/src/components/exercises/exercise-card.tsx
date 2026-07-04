@@ -8,12 +8,12 @@ export function ExerciseCard({ exercise, href }: { exercise: Exercise; href: str
   return (
     <li>
       <Link href={href} className="block">
-        <Surface className="flex flex-col gap-2 transition-colors hover:border-brand">
+        <Surface className="flex flex-col gap-2 transition-colors hover:border-primary/40">
           <div className="flex items-start justify-between gap-2">
             <p className="font-medium">{exercise.name}</p>
             <Badge tone="neutral">{LEVEL_LABELS[exercise.level]}</Badge>
           </div>
-          <div className="flex flex-wrap gap-1.5 text-xs text-muted">
+          <div className="flex flex-wrap gap-1.5 text-xs text-muted-foreground">
             <Badge tone="brand">{CATEGORY_LABELS[exercise.category]}</Badge>
             {exercise.equipment ? <Badge tone="neutral">{EQUIPMENT_LABELS[exercise.equipment]}</Badge> : null}
             {exercise.primaryMuscles.slice(0, 3).map((muscle) => (

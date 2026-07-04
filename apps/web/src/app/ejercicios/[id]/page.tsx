@@ -22,7 +22,7 @@ export default async function ExerciseDetailPage({ params }: { params: Promise<{
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6 pb-10">
-      <Link href="/ejercicios" className="text-sm font-medium text-brand hover:underline">
+      <Link href="/ejercicios" className="text-sm font-medium text-primary hover:underline">
         ← Ejercicios
       </Link>
 
@@ -38,7 +38,7 @@ export default async function ExerciseDetailPage({ params }: { params: Promise<{
       </header>
 
       <Surface className="flex flex-col gap-2">
-        <h2 className="text-sm font-semibold text-muted">Músculos principales</h2>
+        <h2 className="text-sm font-semibold text-muted-foreground">Músculos principales</h2>
         <div className="flex flex-wrap gap-1.5">
           {exercise.primaryMuscles.map((m) => (
             <Badge key={m} tone="accent">
@@ -48,7 +48,7 @@ export default async function ExerciseDetailPage({ params }: { params: Promise<{
         </div>
         {exercise.secondaryMuscles.length > 0 ? (
           <>
-            <h2 className="mt-2 text-sm font-semibold text-muted">Músculos secundarios</h2>
+            <h2 className="mt-2 text-sm font-semibold text-muted-foreground">Músculos secundarios</h2>
             <div className="flex flex-wrap gap-1.5">
               {exercise.secondaryMuscles.map((m) => (
                 <Badge key={m} tone="neutral">
@@ -62,8 +62,8 @@ export default async function ExerciseDetailPage({ params }: { params: Promise<{
 
       {exercise.instructions.length > 0 ? (
         <Surface className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold text-muted">Instrucciones</h2>
-          <p className="text-xs text-muted">Texto original del catálogo de ejercicios (en inglés).</p>
+          <h2 className="text-sm font-semibold text-muted-foreground">Instrucciones</h2>
+          <p className="text-xs text-muted-foreground">Texto original del catálogo de ejercicios (en inglés).</p>
           <ol className="flex list-decimal flex-col gap-2 pl-4 text-sm">
             {exercise.instructions.map((step, i) => (
               <li key={i}>{step}</li>

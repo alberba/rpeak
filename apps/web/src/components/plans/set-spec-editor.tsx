@@ -22,20 +22,20 @@ export function SetSpecEditor({
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-border p-2.5">
       <div className="flex items-center justify-between">
-        <p className="font-mono text-xs font-semibold text-muted">Serie {index + 1}</p>
+        <p className="font-mono text-xs font-semibold text-muted-foreground">Serie {index + 1}</p>
         <div className="flex items-center gap-2">
           <div className="flex overflow-hidden rounded-md border border-border text-xs">
             <button
               type="button"
               onClick={() => spec.kind !== "reps" && onChange(createSetSpec("reps", spec))}
-              className={`px-2 py-1 ${spec.kind === "reps" ? "bg-brand text-white" : "bg-surface text-muted"}`}
+              className={`px-2 py-1 ${spec.kind === "reps" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground"}`}
             >
               Reps
             </button>
             <button
               type="button"
               onClick={() => spec.kind !== "time" && onChange(createSetSpec("time", spec))}
-              className={`px-2 py-1 ${spec.kind === "time" ? "bg-brand text-white" : "bg-surface text-muted"}`}
+              className={`px-2 py-1 ${spec.kind === "time" ? "bg-primary text-primary-foreground" : "bg-card text-muted-foreground"}`}
             >
               Tiempo
             </button>
@@ -123,7 +123,7 @@ export function SetSpecEditor({
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="flex flex-col gap-1">
-      <span className="text-[11px] font-medium text-muted">{label}</span>
+      <span className="text-[11px] font-medium text-muted-foreground">{label}</span>
       {children}
     </label>
   );

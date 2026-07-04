@@ -133,11 +133,11 @@ export function WorkoutRunner({
   const volume = completedSets.reduce((total, set) => total + set.weight * (set.actualReps ?? 0), 0);
 
   return (
-    <div className="notebook-margin mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 bg-notebook px-4 pl-10 py-6 sm:pl-4">
+    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6">
       <header className="flex items-center justify-between gap-2 border-b border-border pb-4">
         <div className="min-w-0">
           <p className="truncate font-display text-xl font-semibold">{session.name}</p>
-          <p className="font-mono text-sm text-muted">{formatDurationBetween(session.startedAt, now)}</p>
+          <p className="font-mono text-sm text-muted-foreground">{formatDurationBetween(session.startedAt, now)}</p>
         </div>
         <Button type="button" variant="ghost" size="sm" onClick={handleFinish}>
           Finalizar
@@ -145,13 +145,13 @@ export function WorkoutRunner({
       </header>
 
       <section className="grid grid-cols-3 gap-3" aria-label="Resumen del entrenamiento">
-        <div><p className="text-xs text-muted">Duración</p><p className="font-mono text-lg text-brand-strong">{formatDurationBetween(session.startedAt, now)}</p></div>
-        <div><p className="text-xs text-muted">Volumen</p><p className="font-mono text-lg">{Math.round(volume)} kg</p></div>
-        <div><p className="text-xs text-muted">Series</p><p className="font-mono text-lg">{completedSets.length}</p></div>
+        <div><p className="text-xs text-muted-foreground">Duración</p><p className="font-mono text-lg text-primary">{formatDurationBetween(session.startedAt, now)}</p></div>
+        <div><p className="text-xs text-muted-foreground">Volumen</p><p className="font-mono text-lg">{Math.round(volume)} kg</p></div>
+        <div><p className="text-xs text-muted-foreground">Series</p><p className="font-mono text-lg">{completedSets.length}</p></div>
       </section>
 
       {saveError ? (
-        <p role="alert" className="text-sm text-danger">
+        <p role="alert" className="text-sm text-destructive">
           {saveError}
         </p>
       ) : null}
@@ -164,9 +164,9 @@ export function WorkoutRunner({
           onAddSeconds={(s) => setRestState((prev) => (prev ? { ...prev, totalSec: prev.totalSec + s } : prev))}
         />
       ) : !active ? (
-        <Surface className="flex flex-col items-center gap-2 border-accent bg-accent-tint/30 py-8 text-center">
+        <Surface className="flex flex-col items-center gap-2 border-primary/40 bg-primary/10 py-8 text-center">
           <p className="font-display text-xl font-semibold">¡Entrenamiento completado!</p>
-          <p className="text-sm text-muted">Buen trabajo. Puedes revisarlo en el historial.</p>
+          <p className="text-sm text-muted-foreground">Buen trabajo. Puedes revisarlo en el historial.</p>
           <Button type="button" onClick={handleFinish} className="mt-2">
             Finalizar y guardar
           </Button>
@@ -177,32 +177,32 @@ export function WorkoutRunner({
         {session.blocks.flatMap((block, blockIndex) => (block.type === "single" ? [block.exercise] : block.exercises).map((exercise, exerciseIndex) => ({ block, blockIndex, exercise, exerciseIndex }))).map(({ block, blockIndex, exercise, exerciseIndex }) => {
           const isActiveExercise = active?.pointer.blockIndex === blockIndex && active.pointer.exerciseIndexInBlock === exerciseIndex;
           return (
-            <section key={exercise.id} className="overflow-hidden rounded-2xl border border-border bg-surface shadow-sm">
+            <section key={exercise.id} className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
               <div className="flex items-start gap-3 px-4 pt-4">
-                <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-tint font-display text-lg font-bold text-brand-strong" aria-hidden="true">{exerciseNames[exercise.exerciseId]?.slice(0, 1) ?? "E"}</div>
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display text-lg font-bold text-primary" aria-hidden="true">{exerciseNames[exercise.exerciseId]?.slice(0, 1) ?? "E"}</div>
                 <div className="min-w-0 flex-1">
-                  <Link href={`/ejercicios/${exercise.exerciseId}`} className="font-display text-lg font-semibold text-brand-strong underline-offset-4 hover:underline focus-visible:underline">
+                  <Link href={`/ejercicios/${exercise.exerciseId}`} className="font-display text-lg font-semibold text-primary underline-offset-4 hover:underline focus-visible:underline">
                     {exerciseNames[exercise.exerciseId] ?? "Ejercicio"}
                   </Link>
-                  <p className="mt-1 text-xs text-muted">⏱ Descanso: {formatSeconds(block.type === "single" ? exercise.restBetweenSetsSec : block.restBetweenRoundsSec)}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">⏱ Descanso: {formatSeconds(block.type === "single" ? exercise.restBetweenSetsSec : block.restBetweenRoundsSec)}</p>
                 </div>
                 {block.type === "superset" ? <Badge tone="neutral">Superserie</Badge> : null}
               </div>
 
               <label className="block px-4 py-3">
                 <span className="sr-only">Notas de {exerciseNames[exercise.exerciseId] ?? "ejercicio"}</span>
-                <input defaultValue={exercise.notes} onBlur={(event) => isActiveExercise && handleExerciseNotesBlur(event.target.value)} placeholder="Añadir notas del ejercicio…" className="w-full border-0 bg-transparent text-sm text-muted outline-none placeholder:text-muted/70" />
+                <input defaultValue={exercise.notes} onBlur={(event) => isActiveExercise && handleExerciseNotesBlur(event.target.value)} placeholder="Añadir notas del ejercicio…" className="w-full border-0 bg-transparent text-sm text-muted-foreground outline-none placeholder:text-muted-foreground/70" />
               </label>
 
-              <div className="grid grid-cols-[2.25rem_1fr_1fr_3.5rem_2.75rem] gap-2 border-y border-border bg-background/70 px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-wide text-muted">
+              <div className="grid grid-cols-[2.25rem_1fr_1fr_3.5rem_2.75rem] gap-2 border-y border-border bg-background/70 px-3 py-2 text-center text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                 <span>Serie</span><span>kg</span><span>{exercise.sets[0]?.kind === "time" ? "Tiempo" : "Reps"}</span><span>RPE</span><span>✓</span>
               </div>
               {exercise.sets.map((set, setIndex) => {
                 const isActiveSet = isActiveExercise && active?.pointer.setIndex === setIndex;
                 if (isActiveSet) return <SetEntryCard key={set.id} setNumber={setIndex + 1} kind={set.kind} targetReps={set.targetReps} targetDurationSec={set.targetDurationSec} initialWeight={set.weight} initialActualReps={set.actualReps} initialActualDurationSec={set.actualDurationSec} initialRpe={set.rpe} onComplete={handleComplete} />;
                 return (
-                  <div key={set.id} className={cn("grid grid-cols-[2.25rem_1fr_1fr_3.5rem_2.75rem] items-center gap-2 border-t border-border px-3 py-3 text-center font-mono text-sm", set.completed && "bg-accent-tint/30")}>
-                    <span className="font-semibold">{setIndex + 1}</span><span>{formatWeight(set.weight)}</span><span>{set.completed ? (set.kind === "reps" ? set.actualReps : `${set.actualDurationSec}s`) : formatRange(set.kind === "reps" ? set.targetReps : set.targetDurationSec)}</span><span>{set.rpe ?? "—"}</span><span className={set.completed ? "text-accent" : "text-muted"}>{set.completed ? "●" : "○"}</span>
+                  <div key={set.id} className={cn("grid grid-cols-[2.25rem_1fr_1fr_3.5rem_2.75rem] items-center gap-2 border-t border-border px-3 py-3 text-center font-mono text-sm", set.completed && "bg-primary/10")}>
+                    <span className="font-semibold">{setIndex + 1}</span><span>{formatWeight(set.weight)}</span><span>{set.completed ? (set.kind === "reps" ? set.actualReps : `${set.actualDurationSec}s`) : formatRange(set.kind === "reps" ? set.targetReps : set.targetDurationSec)}</span><span>{set.rpe ?? "—"}</span><span className={set.completed ? "text-primary" : "text-muted-foreground"}>{set.completed ? "●" : "○"}</span>
                   </div>
                 );
               })}
@@ -211,7 +211,7 @@ export function WorkoutRunner({
         })}
       </div>
 
-      <details className="rounded-xl border border-border bg-surface p-4">
+      <details className="rounded-xl border border-border bg-card p-4">
         <summary className="cursor-pointer font-display text-sm font-semibold">Ver todo el entrenamiento</summary>
         <ul className="mt-3 flex flex-col gap-2">
           {session.blocks.map((block) => {
@@ -236,7 +236,7 @@ export function WorkoutRunner({
       </details>
 
       <label className="flex flex-col gap-1 pb-6">
-        <span className="text-xs font-medium text-muted">Notas de la sesión</span>
+        <span className="text-xs font-medium text-muted-foreground">Notas de la sesión</span>
         <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} onBlur={handleNotesBlur} rows={2} placeholder="¿Cómo te has sentido hoy?" />
       </label>
     </div>

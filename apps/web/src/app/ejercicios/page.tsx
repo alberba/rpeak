@@ -39,7 +39,7 @@ export default async function ExercisesPage({
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6">
       <header>
         <p className="font-display text-2xl font-semibold">Ejercicios</p>
-        <p className="text-sm text-muted">{pluralize(all.length, "ejercicio encontrado", "ejercicios encontrados")}</p>
+        <p className="text-sm text-muted-foreground">{pluralize(all.length, "ejercicio encontrado", "ejercicios encontrados")}</p>
       </header>
 
       <ExerciseFilters
@@ -72,7 +72,7 @@ export default async function ExercisesPage({
           ) : (
             <span />
           )}
-          <span className="text-muted">
+          <span className="text-muted-foreground">
             Página {page} de {totalPages}
           </span>
           {page < totalPages ? (

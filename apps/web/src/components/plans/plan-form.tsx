@@ -142,12 +142,12 @@ export function PlanForm({
       <div className="flex flex-col gap-3">
         <h2 className="font-display text-lg font-semibold">Bloques</h2>
 
-        {blocks.length === 0 ? <p className="text-sm text-muted">Añade tu primer ejercicio para empezar a construir el plan.</p> : null}
+        {blocks.length === 0 ? <p className="text-sm text-muted-foreground">Añade tu primer ejercicio para empezar a construir el plan.</p> : null}
 
         {blocks.map((block, index) => (
-          <Surface key={block.id} className="flex flex-col gap-3 bg-notebook">
+          <Surface key={block.id} className="flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {block.type === "single" ? "Ejercicio" : "Superserie"}
               </p>
               <div className="flex items-center gap-1">
@@ -181,7 +181,7 @@ export function PlanForm({
               <div className="flex flex-col gap-3">
                 <div className="grid grid-cols-2 gap-2">
                   <label className="flex flex-col gap-1">
-                    <span className="text-xs font-medium text-muted">Descanso entre ejercicios (s)</span>
+                    <span className="text-xs font-medium text-muted-foreground">Descanso entre ejercicios (s)</span>
                     <Input
                       type="number"
                       min={0}
@@ -190,7 +190,7 @@ export function PlanForm({
                     />
                   </label>
                   <label className="flex flex-col gap-1">
-                    <span className="text-xs font-medium text-muted">Descanso entre rondas (s)</span>
+                    <span className="text-xs font-medium text-muted-foreground">Descanso entre rondas (s)</span>
                     <Input
                       type="number"
                       min={0}
@@ -243,7 +243,7 @@ export function PlanForm({
       </div>
 
       {error ? (
-        <p role="alert" className="text-sm text-danger">
+        <p role="alert" className="text-sm text-destructive">
           {error}
         </p>
       ) : null}

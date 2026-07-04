@@ -26,9 +26,9 @@ export function NotesEditor({
 
   return (
     <label className="flex flex-col gap-1">
-      <span className="text-xs font-medium text-muted">Notas</span>
+      <span className="text-xs font-medium text-muted-foreground">Notas</span>
       <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} onBlur={handleBlur} rows={3} placeholder="Sin notas" />
-      {!saved ? <span className="text-xs text-muted">Guardando…</span> : null}
+      {!saved ? <span className="text-xs text-muted-foreground">Guardando…</span> : null}
     </label>
   );
 }
