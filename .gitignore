@@ -11,3 +11,5 @@ build/
 coverage/
 .vercel/
 apps/mcp/dist/
+.vercel
+.env*
