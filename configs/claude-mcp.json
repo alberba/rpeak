@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "rpeak": {
+      "type": "http",
+      "url": "https://rpeak.vercel.app/api/mcp",
+      "headers": {
+        "Authorization": "Bearer MCP_BEARER_TOKEN"
+      }
+    }
+  }
+}
