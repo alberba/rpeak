@@ -1,34 +1,5 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { getAnalysisAvailability, isOpenRouterConfigured, parseAnalysisContent } from "./openrouter";
-
-describe("isOpenRouterConfigured / getAnalysisAvailability", () => {
-  afterEach(() => {
-    vi.unstubAllEnvs();
-  });
-
-  it("is unavailable without OPENROUTER_API_KEY", () => {
-    vi.stubEnv("OPENROUTER_API_KEY", "");
-    expect(isOpenRouterConfigured()).toBe(false);
-    const availability = getAnalysisAvailability();
-    expect(availability.available).toBe(false);
-    expect(availability.model).toBeNull();
-    expect(availability.reason).toMatch(/OPENROUTER_API_KEY/);
-  });
-
-  it("is available once OPENROUTER_API_KEY is set, defaulting the model", () => {
-    vi.stubEnv("OPENROUTER_API_KEY", "sk-test");
-    vi.stubEnv("OPENROUTER_MODEL", "");
-    expect(isOpenRouterConfigured()).toBe(true);
-    const availability = getAnalysisAvailability();
-    expect(availability).toEqual({ available: true, reason: null, model: "openrouter/free" });
-  });
-
-  it("uses OPENROUTER_MODEL when set", () => {
-    vi.stubEnv("OPENROUTER_API_KEY", "sk-test");
-    vi.stubEnv("OPENROUTER_MODEL", "anthropic/claude-3.5-haiku");
-    expect(getAnalysisAvailability().model).toBe("anthropic/claude-3.5-haiku");
-  });
-});
+import { describe, expect, it } from "vitest";
+import { parseAnalysisContent } from "./openrouter";
 
 describe("parseAnalysisContent", () => {
   it("parses plain JSON content", () => {

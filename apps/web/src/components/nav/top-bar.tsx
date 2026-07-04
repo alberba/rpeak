@@ -28,7 +28,7 @@ export function TopBar({ user, mode }: { user: UserProfile | null; mode: "demo" 
         <div className="ml-auto flex items-center gap-1">
           <ThemeToggle />
           {user ? (
-            <span className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-2.5 text-sm font-medium">
+            <Link href="/configuracion" aria-label="Abrir configuración" className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-2.5 text-sm font-medium transition-colors hover:bg-muted">
               <span className="flex size-7 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                 {user.displayName
                   .split(" ")
@@ -37,7 +37,7 @@ export function TopBar({ user, mode }: { user: UserProfile | null; mode: "demo" 
                   .join("")}
               </span>
               <span className="hidden max-w-28 truncate sm:inline">{user.displayName}</span>
-            </span>
+            </Link>
           ) : (
             <Link href="/login" className={buttonClasses("primary", "sm")}>
               <LogIn className="size-4" /> Iniciar sesión

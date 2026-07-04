@@ -1,45 +1,25 @@
 import {
   buildWorkoutAnalysisPrompt,
   WorkoutAnalysisResultSchema,
-  type AnalysisAvailability,
   type WorkoutAnalysisRequest,
   type WorkoutAnalysisResult,
 } from "@rpeak/domain";
 import { ApiError } from "@/server/api/http";
 
 const DEFAULT_BASE_URL = "https://openrouter.ai/api/v1";
-const DEFAULT_MODEL = "openrouter/free";
 
-interface OpenRouterConfig {
+export interface OpenRouterConfig {
   apiKey: string;
-  baseUrl: string;
   model: string;
-  siteUrl: string | null;
-  appName: string | null;
 }
 
-function readConfig(): OpenRouterConfig | null {
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) return null;
+function expandConfig(settings: OpenRouterConfig) {
   return {
-    apiKey,
+    ...settings,
     baseUrl: process.env.OPENROUTER_BASE_URL?.trim() || DEFAULT_BASE_URL,
-    model: process.env.OPENROUTER_MODEL?.trim() || DEFAULT_MODEL,
     siteUrl: process.env.OPENROUTER_SITE_URL?.trim() || null,
     appName: process.env.OPENROUTER_APP_NAME?.trim() || "RPeak",
   };
-}
-
-export function isOpenRouterConfigured(): boolean {
-  return readConfig() !== null;
-}
-
-export function getAnalysisAvailability(): AnalysisAvailability {
-  const config = readConfig();
-  if (!config) {
-    return { available: false, reason: "Falta configurar OPENROUTER_API_KEY en el servidor", model: null };
-  }
-  return { available: true, reason: null, model: config.model };
 }
 
 /** Quita el envoltorio de bloque de código markdown que algunos modelos añaden pese a que se les pide JSON puro. */
@@ -69,11 +49,11 @@ interface OpenRouterChatResponse {
 }
 
 /** Pide a OpenRouter un análisis del entrenamiento y devuelve el resultado ya validado. */
-export async function analyzeWorkout(request: WorkoutAnalysisRequest): Promise<WorkoutAnalysisResult> {
-  const config = readConfig();
-  if (!config) {
-    throw new ApiError(503, "El análisis por IA no está disponible: falta configurar OPENROUTER_API_KEY");
-  }
+export async function analyzeWorkout(
+  request: WorkoutAnalysisRequest,
+  settings: OpenRouterConfig,
+): Promise<WorkoutAnalysisResult> {
+  const config = expandConfig(settings);
 
   const { system, user } = buildWorkoutAnalysisPrompt(request);
 

@@ -10,6 +10,7 @@ const ITEMS: Array<{ href: string; label: string; exact?: boolean }> = [
   { href: "/entrenar", label: "Entrenar" },
   { href: "/historial", label: "Historial" },
   { href: "/ejercicios", label: "Ejercicios" },
+  { href: "/configuracion", label: "Configuración" },
 ];
 
 function isActive(pathname: string, href: string, exact?: boolean) {

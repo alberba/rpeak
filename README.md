@@ -61,14 +61,17 @@ La clave pública de Supabase puede estar en el cliente: la protección efectiva
 
 ## OpenRouter
 
-Configura en `apps/web/.env.local`:
+Cada usuario añade su propia clave en **Configuración > OpenRouter**. RPeak la cifra con AES-256-GCM antes de persistirla y la base de datos aplica RLS para aislarla por cuenta. La clave nunca se devuelve al cliente después de guardarla.
+
+El servidor necesita una clave maestra aleatoria de 32 bytes, distinta de cualquier clave de proveedor:
 
 ```dotenv
-OPENROUTER_API_KEY=sk-or-v1-...
-OPENROUTER_MODEL=openrouter/free
+CREDENTIAL_ENCRYPTION_KEY=<salida de: openssl rand -base64 32>
+OPENROUTER_SITE_URL=https://rpeak.vercel.app
+OPENROUTER_APP_NAME=RPeak
 ```
 
-El endpoint `POST /api/v1/analysis` construye un prompt estructurado y valida la respuesta antes de devolverla. Sin clave, la aplicación informa de que el análisis no está disponible. Para fijar un modelo gratuito concreto, usa un identificador vigente terminado en `:free`.
+El endpoint `POST /api/v1/analysis` usa exclusivamente la credencial del usuario autenticado, construye un prompt estructurado y valida la respuesta antes de devolverla. Por defecto se propone `openrouter/free`; también se puede indicar un modelo concreto disponible en OpenRouter.
 
 ## API y MCP
 
