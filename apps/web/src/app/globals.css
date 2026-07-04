@@ -91,6 +91,14 @@ body {
   font-family: var(--font-sans);
 }
 
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
 .muscle-base { fill: oklch(0.87 0.004 260); }
 .dark .muscle-base { fill: oklch(0.35 0.006 260); }
 .muscle-fill-0 { fill: oklch(0.91 0.004 260); }
