@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { createRpeakMcpServer } from "@rpeak/mcp/server";
@@ -56,7 +55,9 @@ async function handleMcpRequest(request: Request) {
 
   const { server } = createRpeakMcpServer(userId);
   const transport = new WebStandardStreamableHTTPServerTransport({
-    sessionIdGenerator: () => randomUUID(),
+    // Vercel no garantiza que dos peticiones alcancen la misma instancia. Cada
+    // petición usa un servidor/transport nuevos, así que no se anuncian sesiones.
+    sessionIdGenerator: undefined,
   });
 
   await server.connect(transport);
