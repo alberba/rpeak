@@ -11,6 +11,8 @@ import { NotesEditor } from "@/components/workout/notes-editor";
 import { formatDate, formatDurationBetween, formatRange, formatWeight } from "@/lib/format";
 import { computeWorkoutStats } from "@/lib/workout-stats";
 import { updateWorkoutNotesAction, deleteWorkoutAction } from "@/app/historial/[id]/actions";
+import { MuscleMap } from "@/components/muscles/muscle-map";
+import { workoutMuscleIntensity } from "@/lib/muscle-load";
 
 export default async function WorkoutDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -22,6 +24,7 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
   const exerciseIds = [...new Set(flattenWorkoutExercises(session).map(({ exercise }) => exercise.exerciseId))];
   const resolved = await Promise.all(exerciseIds.map((exId) => exercises.getById(exId)));
   const exerciseNames = Object.fromEntries(resolved.filter((e): e is Exercise => e !== null).map((e) => [e.id, e.name]));
+  const exerciseMap = new Map(resolved.filter((e): e is Exercise => e !== null).map((e) => [e.id, e]));
 
   const stats = computeWorkoutStats(session);
 
@@ -65,6 +68,12 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
           <p className="text-xs text-muted-foreground">RPE medio</p>
         </Surface>
       </div>
+
+      <MuscleMap
+        intensities={workoutMuscleIntensity(session, exerciseMap)}
+        title="Trabajo muscular realizado"
+        description="Calculado con las series completadas en este entrenamiento."
+      />
 
       <section className="flex flex-col gap-3">
         {session.blocks.map((block) => {

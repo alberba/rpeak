@@ -13,6 +13,8 @@ import {
   MECHANIC_LABELS,
   MUSCLE_LABELS,
 } from "@/lib/exercise-labels";
+import { MuscleMap } from "@/components/muscles/muscle-map";
+import { exerciseMuscleIntensity } from "@/lib/muscle-load";
 
 export default async function ExerciseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -36,6 +38,11 @@ export default async function ExerciseDetailPage({ params }: { params: Promise<{
           {exercise.mechanic ? <Badge tone="neutral">{MECHANIC_LABELS[exercise.mechanic]}</Badge> : null}
         </div>
       </header>
+
+      <MuscleMap
+        intensities={exerciseMuscleIntensity(exercise)}
+        description="Azul intenso: músculo principal. Azul suave: músculo secundario."
+      />
 
       <Surface className="flex flex-col gap-2">
         <h2 className="text-sm font-semibold text-muted-foreground">Músculos principales</h2>
