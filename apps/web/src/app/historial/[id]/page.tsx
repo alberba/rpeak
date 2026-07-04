@@ -13,6 +13,8 @@ import { computeWorkoutStats } from "@/lib/workout-stats";
 import { updateWorkoutNotesAction, deleteWorkoutAction } from "@/app/historial/[id]/actions";
 import { MuscleMap } from "@/components/muscles/muscle-map";
 import { workoutMuscleIntensity } from "@/lib/muscle-load";
+import { WorkoutAnalysisCard } from "@/components/workout/workout-analysis-card";
+import { getUserOpenRouterSettingsSummary } from "@/server/user-ai-settings";
 
 export default async function WorkoutDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -27,6 +29,9 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
   const exerciseMap = new Map(resolved.filter((e): e is Exercise => e !== null).map((e) => [e.id, e]));
 
   const stats = computeWorkoutStats(session);
+  const aiSettings = user.isDemo
+    ? { configured: false, model: "openrouter/free" }
+    : await getUserOpenRouterSettingsSummary(user.id);
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6 pb-10">
@@ -74,6 +79,14 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
         title="Trabajo muscular realizado"
         description="Calculado con las series completadas en este entrenamiento."
       />
+
+      {session.finishedAt ? (
+        <WorkoutAnalysisCard
+          workoutId={session.id}
+          configured={aiSettings.configured}
+          model={aiSettings.model}
+        />
+      ) : null}
 
       <section className="flex flex-col gap-3">
         {session.blocks.map((block) => {
