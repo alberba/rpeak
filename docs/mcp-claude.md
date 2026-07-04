@@ -4,6 +4,10 @@ Usa este MCP remoto:
 
 - `https://rpeak.vercel.app/api/mcp`
 
+OAuth server:
+
+- `https://rpeak.vercel.app/oauth`
+
 Autenticación:
 
 - `Authorization: Bearer <MCP_BEARER_TOKEN>`
@@ -15,5 +19,5 @@ Si usas Claude CLI local:
 Si usas Claude con servidor remoto:
 
 1. Añade el endpoint MCP remoto.
-2. Configura el bearer token.
+2. Configura OAuth con PKCE.
 3. Prueba primero una herramienta de lectura.

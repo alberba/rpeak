@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { createRpeakMcpServer } from "@rpeak/mcp/server";
+import { verifyAccessToken } from "@/server/oauth";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,12 @@ function getBearerToken(request: Request) {
   const header = request.headers.get("authorization");
   if (!header?.startsWith("Bearer ")) return null;
   return header.slice("Bearer ".length);
+}
+
+function getRequiredScope(request: Request) {
+  const path = new URL(request.url).pathname;
+  if (path.includes("/plans")) return "plans:read plans:write";
+  return "workouts:read plans:read";
 }
 
 export async function GET(request: Request) {
@@ -24,14 +31,22 @@ export async function DELETE(request: Request) {
 }
 
 async function handleMcpRequest(request: Request) {
-  const expectedToken = process.env.MCP_BEARER_TOKEN;
-  if (!expectedToken) {
+  if (!process.env.MCP_OAUTH_SIGNING_SECRET || !process.env.MCP_OAUTH_CLIENT_ID) {
     return NextResponse.json({ error: "MCP no configurado" }, { status: 500 });
   }
 
   const token = getBearerToken(request);
-  if (token !== expectedToken) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401, headers: { "www-authenticate": 'Bearer realm="rpeak-mcp"' } });
+  const payload = token ? verifyAccessToken(token) : null;
+  if (!payload) {
+    return NextResponse.json(
+      { error: "unauthorized" },
+      {
+        status: 401,
+        headers: {
+          "www-authenticate": `Bearer resource_metadata="https://rpeak.vercel.app/.well-known/oauth-protected-resource", scope="${getRequiredScope(request)}"`,
+        },
+      },
+    );
   }
 
   const { server } = createRpeakMcpServer();
