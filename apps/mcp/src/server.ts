@@ -3,12 +3,14 @@ import { createSupabaseAdminClient } from "./supabase-client";
 import { loadEnv, loadLocalUserId } from "./env";
 import { registerPlanTools } from "./tools/plans";
 import { registerWorkoutTools } from "./tools/workouts";
+import { registerExerciseTools } from "./tools/exercises";
 
 export function createRpeakMcpServer(userId = loadLocalUserId()) {
   const env = loadEnv();
   const supabase = createSupabaseAdminClient(env);
 
   const server = new McpServer({ name: "rpeak-mcp", version: "0.2.0" });
+  registerExerciseTools(server, supabase, userId);
   registerPlanTools(server, supabase, userId);
   registerWorkoutTools(server, supabase, userId);
 

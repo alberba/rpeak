@@ -34,7 +34,12 @@ export function registerPlanTools(server: McpServer, supabase: SupabaseClient, u
 
   server.registerTool(
     "plans_create",
-    { title: "Crear plan", description: "Crea un nuevo plan de entrenamiento.", inputSchema: PlanCreateInputSchema },
+    {
+      title: "Crear plan",
+      description:
+        "Crea un plan. Busca primero los ejercicios del catálogo con exercises_search, traduciendo al inglés los nombres solicitados. Si no existe un equivalente, pregunta al usuario y, solo si confirma, créalo con exercises_create_custom antes de usar el ID devuelto.",
+      inputSchema: PlanCreateInputSchema,
+    },
     async (input) => textResult(await createPlan(supabase, userId, input)),
   );
 
@@ -42,7 +47,8 @@ export function registerPlanTools(server: McpServer, supabase: SupabaseClient, u
     "plans_update",
     {
       title: "Actualizar plan",
-      description: "Actualiza campos de un plan existente (parcial).",
+      description:
+        "Actualiza un plan. Busca los ejercicios en inglés con exercises_search; si no existen, solicita confirmación antes de usar personalizados.",
       inputSchema: UpdateInputSchema,
     },
     async ({ id, ...input }) => {

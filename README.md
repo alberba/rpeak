@@ -42,6 +42,21 @@ npm run mcp                # inicia el servidor MCP por stdio
 5. Activa Google en Supabase Authentication > Providers y configura sus credenciales.
 6. En Authentication > URL Configuration añade `http://localhost:3000/auth/callback` y la URL equivalente de producción.
 
+### Migraciones automáticas
+
+El workflow `.github/workflows/deploy-database.yml` ejecuta `supabase db push` cuando una migración llega a `main`.
+Configura estos secretos en GitHub, dentro del entorno `production`:
+
+- `SUPABASE_ACCESS_TOKEN`: token personal creado en Supabase > Account > Access Tokens.
+- `SUPABASE_DB_PASSWORD`: contraseña de la base de datos del proyecto (no es la service role key).
+
+Las migraciones deben crearse siempre como archivos nuevos dentro de `supabase/migrations`; no cambies el esquema de producción
+manualmente desde SQL Editor una vez inicializado este flujo.
+
+Como las tres primeras migraciones de RPeak se aplicaron manualmente, la primera ejecución debe iniciarse desde
+GitHub > Actions > Desplegar migraciones de base de datos > Run workflow, marcando `registrar_migraciones_existentes`.
+Esto reconcilia el historial y aplica después las migraciones aún pendientes. No vuelvas a marcar esa opción en ejecuciones futuras.
+
 La clave pública de Supabase puede estar en el cliente: la protección efectiva está en las políticas RLS. La `service_role` nunca debe llegar al navegador.
 
 ## OpenRouter

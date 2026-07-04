@@ -1,4 +1,18 @@
-import { PlanSchema, WorkoutSessionSchema, type Plan, type WorkoutSession } from "@rpeak/domain";
+import { ExerciseSchema, PlanSchema, WorkoutSessionSchema, type Exercise, type Plan, type WorkoutSession } from "@rpeak/domain";
+
+export interface ExerciseRow {
+  id: string;
+  user_id?: string | null;
+  name: string;
+  force: string | null;
+  level: string;
+  mechanic: string | null;
+  equipment: string | null;
+  primary_muscles: string[];
+  secondary_muscles: string[];
+  instructions: string[];
+  category: string;
+}
 
 /** Filas tal y como las devuelve Postgrest (snake_case); ver apps/web/src/server/repositories/supabase/mappers.ts. */
 export interface PlanRow {
@@ -20,6 +34,21 @@ export interface WorkoutSessionRow {
   blocks: unknown;
   started_at: string;
   finished_at: string | null;
+}
+
+export function exerciseFromRow(row: ExerciseRow): Exercise {
+  return ExerciseSchema.parse({
+    id: row.id,
+    name: row.name,
+    force: row.force,
+    level: row.level,
+    mechanic: row.mechanic,
+    equipment: row.equipment,
+    primaryMuscles: row.primary_muscles,
+    secondaryMuscles: row.secondary_muscles,
+    instructions: row.instructions,
+    category: row.category,
+  });
 }
 
 export function planFromRow(row: PlanRow): Plan {

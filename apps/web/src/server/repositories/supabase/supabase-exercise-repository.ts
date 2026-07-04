@@ -6,6 +6,7 @@ import { getSupabaseServerClient } from "./server-client";
 export class SupabaseExerciseRepository implements ExerciseRepository {
   async list(filter?: ExerciseFilter): Promise<Exercise[]> {
     const supabase = await getSupabaseServerClient();
+    // RLS devuelve el catálogo base y los ejercicios personalizados del usuario.
     let query = supabase.from("exercises").select("*");
 
     if (filter?.query) query = query.ilike("name", `%${filter.query}%`);
