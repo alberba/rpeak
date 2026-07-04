@@ -21,7 +21,7 @@ export function ExerciseBlockEditor({
   showRestBetweenSets: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-lg bg-brand-tint/30 p-3">
+    <div className="flex flex-col gap-3 rounded-lg bg-primary/10 p-3">
       <div className="flex items-start justify-between gap-2">
         <p className="font-medium">{exerciseName}</p>
         {onRemove ? (
@@ -34,7 +34,7 @@ export function ExerciseBlockEditor({
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {showRestBetweenSets ? (
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-muted">Descanso entre series (s)</span>
+            <span className="text-xs font-medium text-muted-foreground">Descanso entre series (s)</span>
             <Input
               type="number"
               min={0}
@@ -44,7 +44,7 @@ export function ExerciseBlockEditor({
           </label>
         ) : null}
         <label className="flex flex-col gap-1 sm:col-span-2">
-          <span className="text-xs font-medium text-muted">Notas</span>
+          <span className="text-xs font-medium text-muted-foreground">Notas</span>
           <Textarea
             rows={2}
             value={exercise.notes}

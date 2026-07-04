@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, Inter, Space_Grotesk } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ServiceWorkerRegister } from "@/components/pwa/sw-register";
 import { AppShell } from "@/components/nav/app-shell";
@@ -7,21 +7,14 @@ import { getAppMode } from "@/server/mode";
 import { safeGetCurrentUser } from "@/lib/current-user";
 import "./globals.css";
 
-const bodyFont = Inter({
+const bodyFont = Geist({
   variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
 });
 
-const displayFont = Space_Grotesk({
-  variable: "--font-display",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const numericFont = IBM_Plex_Mono({
+const numericFont = Geist_Mono({
   variable: "--font-numeric",
-  weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -46,8 +39,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f5f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#14171a" },
+    { media: "(prefers-color-scheme: light)", color: "#fafaf7" },
+    { media: "(prefers-color-scheme: dark)", color: "#26221f" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -66,7 +59,7 @@ export default async function RootLayout({
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${bodyFont.variable} ${displayFont.variable} ${numericFont.variable} h-full antialiased`}
+      className={`${bodyFont.variable} ${numericFont.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider>

@@ -15,13 +15,13 @@ export default async function LoginPage() {
     <div className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center justify-center gap-6 px-4 py-10">
       <div className="text-center">
         <p className="font-display text-3xl font-semibold">RPeak</p>
-        <p className="mt-1 text-sm text-muted">Tu cuaderno de entrenamiento en vivo</p>
+        <p className="mt-1 text-sm text-muted-foreground">Tu cuaderno de entrenamiento en vivo</p>
       </div>
 
       <Surface className="flex w-full flex-col gap-4">
         {mode === "demo" ? (
           <>
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted-foreground">
               Este entorno corre en modo demo: puedes explorar RPeak con datos de ejemplo, sin crear ninguna cuenta.
             </p>
             <Link href="/" className={buttonClasses("primary", "lg")}>
@@ -30,7 +30,7 @@ export default async function LoginPage() {
           </>
         ) : (
           <>
-            <p className="text-sm text-muted">Inicia sesión con tu cuenta de Google para acceder a tus planes y entrenamientos.</p>
+            <p className="text-sm text-muted-foreground">Inicia sesión con tu cuenta de Google para acceder a tus planes y entrenamientos.</p>
             <GoogleLoginButton />
           </>
         )}

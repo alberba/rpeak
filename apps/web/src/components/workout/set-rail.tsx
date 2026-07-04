@@ -33,7 +33,7 @@ export function SetRail({
                 aria-hidden="true"
                 className={cn(
                   "absolute top-5 left-[9px] -bottom-1 w-px",
-                  node.state === "completed" ? "bg-accent" : "bg-border",
+                  node.state === "completed" ? "bg-primary/15" : "bg-border",
                 )}
               />
             )}
@@ -41,9 +41,9 @@ export function SetRail({
               aria-hidden="true"
               className={cn(
                 "relative z-10 mt-1 flex size-[19px] shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-                node.state === "completed" && "border-accent bg-accent text-white",
-                node.state === "active" && "border-brand bg-brand text-white motion-safe:animate-pulse",
-                node.state === "pending" && "border-border bg-surface",
+                node.state === "completed" && "border-primary/40 bg-primary/15 text-white",
+                node.state === "active" && "border-primary bg-primary text-primary-foreground motion-safe:animate-pulse",
+                node.state === "pending" && "border-border bg-card",
                 node.state === "skipped" && "border-border bg-border/60",
               )}
             >
@@ -59,12 +59,12 @@ export function SetRail({
                   <p
                     className={cn(
                       "font-mono text-sm font-medium",
-                      node.state === "pending" ? "text-muted" : "text-foreground",
+                      node.state === "pending" ? "text-muted-foreground" : "text-foreground",
                     )}
                   >
                     {node.title}
                   </p>
-                  {node.subtitle ? <p className="truncate text-xs text-muted">{node.subtitle}</p> : null}
+                  {node.subtitle ? <p className="truncate text-xs text-muted-foreground">{node.subtitle}</p> : null}
                 </div>
                 {renderTrailing ? <div className="shrink-0">{renderTrailing(node, index)}</div> : null}
               </div>

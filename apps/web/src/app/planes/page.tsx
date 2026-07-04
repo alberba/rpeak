@@ -16,7 +16,7 @@ export default async function PlansPage() {
       <header className="flex items-center justify-between">
         <div>
           <p className="font-display text-2xl font-semibold">Planes</p>
-          <p className="text-sm text-muted">Plantillas de entrenamiento reutilizables</p>
+          <p className="text-sm text-muted-foreground">Plantillas de entrenamiento reutilizables</p>
         </div>
         <Link href="/planes/nuevo" className={buttonClasses("primary", "sm")}>
           + Nuevo
@@ -38,10 +38,10 @@ export default async function PlansPage() {
           {userPlans.map((plan) => (
             <li key={plan.id}>
               <Link href={`/planes/${plan.id}`}>
-                <Surface className="flex flex-col gap-1 transition-colors hover:border-brand">
+                <Surface className="flex flex-col gap-1 transition-colors hover:border-primary/40">
                   <p className="font-medium">{plan.name}</p>
-                  {plan.description ? <p className="line-clamp-2 text-sm text-muted">{plan.description}</p> : null}
-                  <p className="text-xs text-muted">{pluralize(plan.blocks.length, "bloque", "bloques")}</p>
+                  {plan.description ? <p className="line-clamp-2 text-sm text-muted-foreground">{plan.description}</p> : null}
+                  <p className="text-xs text-muted-foreground">{pluralize(plan.blocks.length, "bloque", "bloques")}</p>
                 </Surface>
               </Link>
             </li>

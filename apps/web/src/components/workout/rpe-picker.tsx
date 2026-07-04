@@ -8,8 +8,8 @@ export function RpePicker({ value, onChange }: { value: number | null; onChange:
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium text-muted">RPE (esfuerzo percibido)</span>
-        <span className="font-mono text-sm font-semibold text-brand-strong">{value === null ? "—" : value}</span>
+        <span className="text-xs font-medium text-muted-foreground">RPE (esfuerzo percibido)</span>
+        <span className="font-mono text-sm font-semibold text-primary">{value === null ? "—" : value}</span>
       </div>
       <input
         type="range"
@@ -20,7 +20,7 @@ export function RpePicker({ value, onChange }: { value: number | null; onChange:
         onChange={(e) => onChange(Number(e.target.value))}
         aria-label="RPE, de 1 a 10"
         aria-valuetext={value === null ? "sin definir" : String(value)}
-        className="w-full accent-[var(--color-brand)]"
+        className="w-full accent-[var(--color-primary)]"
       />
       <div className="flex flex-wrap gap-1.5">
         {QUICK_VALUES.map((v) => (
@@ -30,7 +30,7 @@ export function RpePicker({ value, onChange }: { value: number | null; onChange:
             onClick={() => onChange(v)}
             className={cn(
               "rounded-full border px-2.5 py-1 font-mono text-xs",
-              value === v ? "border-brand bg-brand text-white" : "border-border bg-surface text-muted hover:border-brand",
+              value === v ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-primary/40",
             )}
           >
             {v}
@@ -41,7 +41,7 @@ export function RpePicker({ value, onChange }: { value: number | null; onChange:
           onClick={() => onChange(null)}
           className={cn(
             "rounded-full border px-2.5 py-1 text-xs",
-            value === null ? "border-accent bg-accent-tint text-accent-strong" : "border-border bg-surface text-muted",
+            value === null ? "border-primary/40 bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground",
           )}
         >
           Sin RPE

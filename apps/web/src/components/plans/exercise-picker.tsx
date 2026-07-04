@@ -24,7 +24,7 @@ export function ExercisePicker({ onSelect, onClose }: { onSelect: (exercise: Exe
   }, [query]);
 
   return (
-    <Surface className="flex flex-col gap-3 border-brand">
+    <Surface className="flex flex-col gap-3 border-primary">
       <div className="flex items-center justify-between gap-2">
         <p className="text-sm font-semibold">Añadir ejercicio</p>
         <Button type="button" variant="ghost" size="sm" onClick={onClose}>
@@ -40,17 +40,17 @@ export function ExercisePicker({ onSelect, onClose }: { onSelect: (exercise: Exe
         aria-label="Buscar ejercicio para añadir"
       />
       <ul className="flex max-h-72 flex-col gap-1.5 overflow-y-auto" aria-live="polite">
-        {isPending ? <li className="px-1 py-2 text-sm text-muted">Buscando…</li> : null}
-        {!isPending && results.length === 0 ? <li className="px-1 py-2 text-sm text-muted">Sin resultados.</li> : null}
+        {isPending ? <li className="px-1 py-2 text-sm text-muted-foreground">Buscando…</li> : null}
+        {!isPending && results.length === 0 ? <li className="px-1 py-2 text-sm text-muted-foreground">Sin resultados.</li> : null}
         {results.map((exercise) => (
           <li key={exercise.id}>
             <button
               type="button"
               onClick={() => onSelect(exercise)}
-              className="flex w-full flex-col rounded-lg border border-border px-3 py-2 text-left text-sm hover:border-brand hover:bg-brand-tint"
+              className="flex w-full flex-col rounded-lg border border-border px-3 py-2 text-left text-sm hover:border-primary/40 hover:bg-primary/10"
             >
               <span className="font-medium">{exercise.name}</span>
-              <span className="text-xs text-muted">{CATEGORY_LABELS[exercise.category]}</span>
+              <span className="text-xs text-muted-foreground">{CATEGORY_LABELS[exercise.category]}</span>
             </button>
           </li>
         ))}

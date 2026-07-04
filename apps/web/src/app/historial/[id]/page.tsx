@@ -27,14 +27,14 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6 pb-10">
-      <Link href="/historial" className="text-sm font-medium text-brand hover:underline">
+      <Link href="/historial" className="text-sm font-medium text-primary hover:underline">
         ← Historial
       </Link>
 
       <header className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="font-display text-2xl font-semibold">{session.name}</p>
-          <p className="text-sm text-muted">{formatDate(session.startedAt)}</p>
+          <p className="text-sm text-muted-foreground">{formatDate(session.startedAt)}</p>
         </div>
         {session.finishedAt === null ? (
           <Link href={`/entrenar/${session.id}`} className={buttonClasses("primary", "sm")}>
@@ -48,21 +48,21 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <Surface className="flex flex-col items-center gap-0.5 py-3">
           <p className="font-mono text-lg font-semibold">{formatDurationBetween(session.startedAt, session.finishedAt)}</p>
-          <p className="text-xs text-muted">Duración</p>
+          <p className="text-xs text-muted-foreground">Duración</p>
         </Surface>
         <Surface className="flex flex-col items-center gap-0.5 py-3">
           <p className="font-mono text-lg font-semibold">
             {stats.completedSets}/{stats.totalSets}
           </p>
-          <p className="text-xs text-muted">Series</p>
+          <p className="text-xs text-muted-foreground">Series</p>
         </Surface>
         <Surface className="flex flex-col items-center gap-0.5 py-3">
           <p className="font-mono text-lg font-semibold">{Math.round(stats.volumeKg)}</p>
-          <p className="text-xs text-muted">Volumen (kg)</p>
+          <p className="text-xs text-muted-foreground">Volumen (kg)</p>
         </Surface>
         <Surface className="flex flex-col items-center gap-0.5 py-3">
           <p className="font-mono text-lg font-semibold">{stats.avgRpe ?? "—"}</p>
-          <p className="text-xs text-muted">RPE medio</p>
+          <p className="text-xs text-muted-foreground">RPE medio</p>
         </Surface>
       </div>
 
@@ -71,7 +71,7 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
           const blockExercises = block.type === "single" ? [block.exercise] : block.exercises;
           return (
             <Surface key={block.id} className="flex flex-col gap-4">
-              {block.type === "superset" ? <p className="text-xs font-semibold uppercase tracking-wide text-muted">Superserie</p> : null}
+              {block.type === "superset" ? <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Superserie</p> : null}
               {blockExercises.map((exercise) => {
                 const nodes: SetRailNode[] = exercise.sets.map((set, index) => ({
                   id: set.id,
@@ -84,7 +84,7 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
                 return (
                   <div key={exercise.id} className="flex flex-col gap-2">
                     <p className="font-medium">{exerciseNames[exercise.exerciseId] ?? "Ejercicio"}</p>
-                    {exercise.notes ? <p className="text-xs text-muted">{exercise.notes}</p> : null}
+                    {exercise.notes ? <p className="text-xs text-muted-foreground">{exercise.notes}</p> : null}
                     <SetRail nodes={nodes} />
                   </div>
                 );

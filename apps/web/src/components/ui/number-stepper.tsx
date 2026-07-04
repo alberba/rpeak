@@ -30,7 +30,7 @@ export function NumberStepper({
 
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor={id} className="text-xs font-medium text-muted">
+      <label htmlFor={id} className="text-xs font-medium text-muted-foreground">
         {label}
       </label>
       <div className="flex items-center gap-1.5">
@@ -39,8 +39,8 @@ export function NumberStepper({
           aria-label={`Restar ${step}${suffix ?? ""} a ${label}`}
           onClick={() => onChange(clamp(value - step))}
           className={cn(
-            "flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-lg font-medium",
-            "hover:bg-brand-tint focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+            "flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-lg font-medium",
+            "hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           )}
         >
           −
@@ -57,16 +57,16 @@ export function NumberStepper({
             const parsed = Number(e.target.value);
             if (Number.isFinite(parsed)) onChange(clamp(parsed));
           }}
-          className="h-9 w-full min-w-0 rounded-lg border border-border bg-surface px-2 text-center font-mono text-base tabular-nums focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className="h-9 w-full min-w-0 rounded-lg border border-border bg-card px-2 text-center font-mono text-base tabular-nums focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         />
-        {suffix ? <span className="shrink-0 text-xs text-muted">{suffix}</span> : null}
+        {suffix ? <span className="shrink-0 text-xs text-muted-foreground">{suffix}</span> : null}
         <button
           type="button"
           aria-label={`Sumar ${step}${suffix ?? ""} a ${label}`}
           onClick={() => onChange(clamp(value + step))}
           className={cn(
-            "flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-lg font-medium",
-            "hover:bg-brand-tint focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand",
+            "flex size-9 shrink-0 items-center justify-center rounded-lg border border-border bg-card text-lg font-medium",
+            "hover:bg-primary/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           )}
         >
           +

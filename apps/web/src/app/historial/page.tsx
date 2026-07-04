@@ -16,7 +16,7 @@ export default async function HistoryPage() {
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6">
       <header>
         <p className="font-display text-2xl font-semibold">Historial</p>
-        <p className="text-sm text-muted">Tus entrenamientos registrados</p>
+        <p className="text-sm text-muted-foreground">Tus entrenamientos registrados</p>
       </header>
 
       {sessions.length === 0 ? (
@@ -28,12 +28,12 @@ export default async function HistoryPage() {
             return (
               <li key={session.id}>
                 <Link href={`/historial/${session.id}`}>
-                  <Surface className="flex flex-col gap-1 transition-colors hover:border-brand">
+                  <Surface className="flex flex-col gap-1 transition-colors hover:border-primary/40">
                     <div className="flex items-center justify-between gap-2">
                       <p className="truncate font-medium">{session.name}</p>
                       {session.finishedAt === null ? <Badge tone="accent">En curso</Badge> : null}
                     </div>
-                    <p className="text-xs text-muted">
+                    <p className="text-xs text-muted-foreground">
                       {formatDate(session.startedAt)} · {formatDurationBetween(session.startedAt, session.finishedAt)} ·{" "}
                       {stats.completedSets}/{stats.totalSets} series
                     </p>
