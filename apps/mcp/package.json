@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
-    "@rpeak/domain": "*",
+    "@rpeak/domain": "workspace:*",
     "@supabase/supabase-js": "^2.110.0",
     "zod": "^3.23.8"
   },

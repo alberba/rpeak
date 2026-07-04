@@ -11,8 +11,9 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@rpeak/domain": "*",
-    "@rpeak/mcp": "*",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@rpeak/domain": "workspace:*",
+    "@rpeak/mcp": "workspace:*",
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.110.0",
     "clsx": "^2.1.1",

@@ -19,8 +19,8 @@ PWA móvil para planificar, registrar y analizar entrenamientos. La interfaz usa
 Requiere Node.js 20 o superior.
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 Abre `http://localhost:3000`. Sin variables de Supabase se activa un modo demo claramente identificado, con datos en memoria.
@@ -28,9 +28,9 @@ Abre `http://localhost:3000`. Sin variables de Supabase se activa un modo demo c
 Comandos principales:
 
 ```bash
-npm run ci                 # lint + tipos + tests + build
-npm run import:exercises   # actualiza el snapshot local del catálogo
-npm run mcp                # inicia el servidor MCP por stdio
+pnpm run ci                 # lint + tipos + tests + build
+pnpm run import:exercises   # actualiza el snapshot local del catálogo
+pnpm run mcp                # inicia el servidor MCP por stdio
 ```
 
 ## Supabase y acceso con Google
@@ -88,7 +88,7 @@ Ejemplo de configuración de un cliente MCP:
 {
   "mcpServers": {
     "rpeak": {
-      "command": "npm",
+      "command": "pnpm",
       "args": ["run", "mcp"],
       "cwd": "/ruta/absoluta/a/rpeak"
     }
