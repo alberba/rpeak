@@ -49,7 +49,12 @@ async function handleMcpRequest(request: Request) {
     );
   }
 
-  const { server } = createRpeakMcpServer();
+  const userId = typeof payload.sub === "string" ? payload.sub : null;
+  if (!userId) {
+    return NextResponse.json({ error: "invalid_token" }, { status: 401 });
+  }
+
+  const { server } = createRpeakMcpServer(userId);
   const transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: () => randomUUID(),
   });

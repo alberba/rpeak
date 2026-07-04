@@ -2,6 +2,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { sha256Base64Url } from "@/server/oauth";
 
 export interface PendingAuthCode {
+  userId: string;
   clientId: string;
   redirectUri: string;
   codeChallenge: string;
@@ -12,6 +13,7 @@ export interface PendingAuthCode {
 }
 
 interface StoredAuthCode {
+  user_id: string;
   client_id: string;
   redirect_uri: string;
   code_challenge: string;
@@ -36,6 +38,7 @@ function createOAuthStorageClient(): SupabaseClient {
 export async function saveAuthCode(code: string, record: PendingAuthCode) {
   const { error } = await createOAuthStorageClient().from("oauth_authorization_codes").insert({
     code_hash: sha256Base64Url(code),
+    user_id: record.userId,
     client_id: record.clientId,
     redirect_uri: record.redirectUri,
     code_challenge: record.codeChallenge,
@@ -58,6 +61,7 @@ export async function consumeAuthCode(code: string): Promise<PendingAuthCode | n
   if (!stored) return null;
 
   return {
+    userId: stored.user_id,
     clientId: stored.client_id,
     redirectUri: stored.redirect_uri,
     codeChallenge: stored.code_challenge,

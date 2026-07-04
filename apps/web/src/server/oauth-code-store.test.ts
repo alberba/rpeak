@@ -27,6 +27,7 @@ describe("almacén de códigos OAuth", () => {
     supabase.insert.mockResolvedValue({ error: null });
 
     await saveAuthCode("codigo-secreto", {
+      userId: "8c4972d7-54da-42e6-9363-d1e0c247582b",
       clientId: "rpeak-chatgpt",
       redirectUri: "https://chatgpt.com/connector/oauth/test",
       codeChallenge: "challenge",
@@ -39,6 +40,7 @@ describe("almacén de códigos OAuth", () => {
     expect(supabase.insert).toHaveBeenCalledWith(
       expect.objectContaining({
         code_hash: sha256Base64Url("codigo-secreto"),
+        user_id: "8c4972d7-54da-42e6-9363-d1e0c247582b",
         client_id: "rpeak-chatgpt",
       }),
     );
@@ -49,6 +51,7 @@ describe("almacén de códigos OAuth", () => {
     supabase.rpc.mockResolvedValue({
       error: null,
       data: [{
+        user_id: "8c4972d7-54da-42e6-9363-d1e0c247582b",
         client_id: "rpeak-chatgpt",
         redirect_uri: "https://chatgpt.com/connector/oauth/test",
         code_challenge: "challenge",
@@ -60,6 +63,7 @@ describe("almacén de códigos OAuth", () => {
     });
 
     await expect(consumeAuthCode("codigo-secreto")).resolves.toMatchObject({
+      userId: "8c4972d7-54da-42e6-9363-d1e0c247582b",
       clientId: "rpeak-chatgpt",
       codeChallenge: "challenge",
       scope: "plans:read",

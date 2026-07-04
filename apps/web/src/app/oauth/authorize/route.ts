@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import { getOAuthConfig, randomToken } from "@/server/oauth";
 import { saveAuthCode } from "@/server/oauth-code-store";
+import { getSupabaseSessionUser } from "@/server/repositories/supabase/session";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
+  const user = await getSupabaseSessionUser();
+  if (!user) {
+    const next = `${url.pathname}${url.search}`;
+    return NextResponse.redirect(new URL(`/auth/signin?next=${encodeURIComponent(next)}`, url.origin));
+  }
   const clientId = url.searchParams.get("client_id");
   const redirectUri = url.searchParams.get("redirect_uri");
   const codeChallenge = url.searchParams.get("code_challenge");
@@ -18,6 +24,7 @@ export async function GET(request: Request) {
 
   const code = randomToken(24);
   await saveAuthCode(code, {
+    userId: user.id,
     clientId,
     redirectUri,
     codeChallenge,
@@ -34,6 +41,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const user = await getSupabaseSessionUser();
+  if (!user) return NextResponse.json({ error: "login_required" }, { status: 401 });
+
   const body = await request.formData();
   const code = randomToken(24);
   const challenge = String(body.get("code_challenge") ?? "");
@@ -49,6 +59,7 @@ export async function POST(request: Request) {
   }
 
   await saveAuthCode(code, {
+    userId: user.id,
     clientId,
     redirectUri,
     codeChallenge: challenge,

@@ -1,15 +1,8 @@
 import { z } from "zod";
 
-/**
- * El servidor MCP usa la service role key (bypassa RLS), así que nunca acepta un
- * userId por parámetro de herramienta: solo opera sobre RPEAK_USER_ID, fijado en el
- * entorno de este proceso. Así un prompt no puede hacer que el modelo lea o escriba
- * los datos de otro usuario simplemente pasando otro id como argumento.
- */
 const EnvSchema = z.object({
   SUPABASE_URL: z.string().url({ message: "SUPABASE_URL debe ser una URL válida" }),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1, "Falta SUPABASE_SERVICE_ROLE_KEY"),
-  RPEAK_USER_ID: z.string().min(1, "Falta RPEAK_USER_ID"),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -22,5 +15,12 @@ export function loadEnv(): Env {
     console.error(`Configuración de entorno inválida para @rpeak/mcp:\n${issues}`);
     process.exit(1);
   }
+  return result.data;
+}
+
+/** El transporte stdio no tiene OAuth; por eso necesita fijar un único usuario local. */
+export function loadLocalUserId(): string {
+  const result = z.string().uuid("RPEAK_USER_ID debe ser un UUID válido").safeParse(process.env.RPEAK_USER_ID);
+  if (!result.success) throw new Error(result.error.issues[0]?.message ?? "Falta RPEAK_USER_ID");
   return result.data;
 }

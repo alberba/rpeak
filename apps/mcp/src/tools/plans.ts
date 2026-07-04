@@ -17,7 +17,7 @@ export function registerPlanTools(server: McpServer, supabase: SupabaseClient, u
     "plans_list",
     {
       title: "Listar planes",
-      description: "Lista todos los planes de entrenamiento del usuario configurado en este servidor MCP.",
+      description: "Lista todos los planes de entrenamiento del usuario autenticado.",
     },
     async () => textResult(await listPlans(supabase, userId)),
   );

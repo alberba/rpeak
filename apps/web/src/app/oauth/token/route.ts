@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
   const accessToken = signJwt(
     {
-      sub: "rpeak-user",
+      sub: authCode.userId,
       aud: authCode.resource ?? "https://rpeak.vercel.app",
       scope: authCode.scope,
       iss: "https://rpeak.vercel.app/oauth",
