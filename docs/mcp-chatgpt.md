@@ -19,7 +19,7 @@ Pasos:
 3. Crea la app apuntando al servidor MCP remoto de RPeak.
 4. En OAuth, usa el cliente pre-registrado:
    - Client ID: `rpeak-chatgpt`
-   - Client secret: `08bf5976a10bda07a13291a46c8b92d9e4cf`
+   - Client secret: usa el valor actual de `MCP_OAUTH_CLIENT_SECRET` configurado de forma segura.
 5. Si te pide el servidor de autorización, usa `https://rpeak.vercel.app/oauth`.
 
 Notas:

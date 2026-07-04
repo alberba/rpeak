@@ -17,7 +17,7 @@ export async function GET(request: Request) {
   }
 
   const code = randomToken(24);
-  saveAuthCode(code, {
+  await saveAuthCode(code, {
     clientId,
     redirectUri,
     codeChallenge,
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.formData();
-  const code = String(body.get("code") ?? "");
+  const code = randomToken(24);
   const challenge = String(body.get("code_challenge") ?? "");
   const clientId = String(body.get("client_id") ?? "");
   const redirectUri = String(body.get("redirect_uri") ?? "");
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
 
-  saveAuthCode(code, {
+  await saveAuthCode(code, {
     clientId,
     redirectUri,
     codeChallenge: challenge,
