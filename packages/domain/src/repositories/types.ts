@@ -1,6 +1,7 @@
 import type { Exercise, ExerciseFilter } from "../schemas/exercise";
 import type { Plan, PlanCreateInput, PlanUpdateInput } from "../schemas/plan";
 import type { WorkoutCreateInput, WorkoutFilter, WorkoutSession, WorkoutUpdateInput } from "../schemas/workout";
+import type { WorkoutAnalysisCreateInput, WorkoutAnalysisRecord } from "../schemas/analysis";
 
 /**
  * Contratos de repositorio. Independientes de la infraestructura: la app web los
@@ -27,4 +28,9 @@ export interface WorkoutRepository {
   create(userId: string, input: WorkoutCreateInput): Promise<WorkoutSession>;
   update(id: string, userId: string, input: WorkoutUpdateInput): Promise<WorkoutSession | null>;
   remove(id: string, userId: string): Promise<boolean>;
+}
+
+export interface AnalysisRepository {
+  getByWorkoutId(workoutId: string, userId: string): Promise<WorkoutAnalysisRecord | null>;
+  upsert(userId: string, input: WorkoutAnalysisCreateInput): Promise<WorkoutAnalysisRecord>;
 }

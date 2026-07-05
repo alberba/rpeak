@@ -3,7 +3,7 @@ import { flattenWorkoutExercises, type Exercise } from "@rpeak/domain";
 import { requireUser } from "@/lib/current-user";
 import { getRepositories } from "@/server/repositories";
 import { WorkoutRunner } from "@/components/workout/workout-runner";
-import { saveWorkoutBlocksAction, updateWorkoutNotesAction, finishWorkoutAction } from "@/app/entrenar/[id]/actions";
+import { saveWorkoutBlocksAction, updateWorkoutNotesAction, finishWorkoutAction, applyExerciseSwapsAction } from "@/app/entrenar/[id]/actions";
 
 export default async function ActiveWorkoutPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -20,12 +20,14 @@ export default async function ActiveWorkoutPage({ params }: { params: Promise<{ 
   return (
     <WorkoutRunner
       workoutId={session.id}
+      planId={session.planId}
       initialSession={session}
       initialNow={new Date().toISOString()}
       exerciseNames={exerciseNames}
       saveBlocksAction={saveWorkoutBlocksAction}
       updateNotesAction={updateWorkoutNotesAction}
       finishWorkoutAction={finishWorkoutAction}
+      applyExerciseSwapsAction={applyExerciseSwapsAction}
     />
   );
 }

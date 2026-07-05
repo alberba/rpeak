@@ -25,5 +25,9 @@ export const POST = withRoute(async (request: Request) => {
 
   const analysisRequest = await buildAnalysisRequest(workout, exercises);
   const result = await analyzeWorkout(analysisRequest, settings);
+
+  const { analyses } = getRepositories();
+  await analyses.upsert(user.id, { workoutId, model: settings.model, ...result });
+
   return NextResponse.json(result);
 });
