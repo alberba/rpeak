@@ -1,4 +1,13 @@
-import { ExerciseSchema, PlanSchema, WorkoutSessionSchema, type Exercise, type Plan, type WorkoutSession } from "@rpeak/domain";
+import {
+  ExerciseSchema,
+  PlanSchema,
+  WorkoutAnalysisRecordSchema,
+  WorkoutSessionSchema,
+  type Exercise,
+  type Plan,
+  type WorkoutAnalysisRecord,
+  type WorkoutSession,
+} from "@rpeak/domain";
 
 /**
  * Filas tal y como las devuelve Postgrest (snake_case). Los bloques de plan/entrenamiento
@@ -61,6 +70,32 @@ export function workoutFromRow(row: WorkoutSessionRow): WorkoutSession {
     blocks: row.blocks,
     startedAt: row.started_at,
     finishedAt: row.finished_at,
+  });
+}
+
+export interface WorkoutAnalysisRow {
+  id: string;
+  workout_id: string;
+  user_id: string;
+  model: string;
+  summary: string;
+  highlights: string[];
+  suggestions: string[];
+  risk_flags: string[];
+  created_at: string;
+}
+
+export function workoutAnalysisFromRow(row: WorkoutAnalysisRow): WorkoutAnalysisRecord {
+  return WorkoutAnalysisRecordSchema.parse({
+    id: row.id,
+    workoutId: row.workout_id,
+    userId: row.user_id,
+    model: row.model,
+    summary: row.summary,
+    highlights: row.highlights,
+    suggestions: row.suggestions,
+    riskFlags: row.risk_flags,
+    createdAt: row.created_at,
   });
 }
 

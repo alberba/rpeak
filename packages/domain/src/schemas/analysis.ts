@@ -41,3 +41,19 @@ export const AnalysisAvailabilitySchema = z.object({
   model: z.string().nullable(),
 });
 export type AnalysisAvailability = z.infer<typeof AnalysisAvailabilitySchema>;
+
+/** Análisis de IA ya persistido en base de datos, asociado a un entrenamiento concreto. */
+export const WorkoutAnalysisRecordSchema = WorkoutAnalysisResultSchema.extend({
+  id: z.string().min(1),
+  workoutId: z.string().min(1),
+  userId: z.string().min(1),
+  model: z.string().min(1),
+  createdAt: z.string(),
+});
+export type WorkoutAnalysisRecord = z.infer<typeof WorkoutAnalysisRecordSchema>;
+
+export const WorkoutAnalysisCreateInputSchema = WorkoutAnalysisResultSchema.extend({
+  workoutId: z.string().min(1),
+  model: z.string().min(1),
+});
+export type WorkoutAnalysisCreateInput = z.infer<typeof WorkoutAnalysisCreateInputSchema>;

@@ -32,6 +32,7 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
   const aiSettings = user.isDemo
     ? { configured: false, model: "openrouter/free" }
     : await getUserOpenRouterSettingsSummary(user.id);
+  const savedAnalysis = user.isDemo ? null : await getRepositories().analyses.getByWorkoutId(session.id, user.id);
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-4 px-4 py-6 pb-10">
@@ -85,6 +86,7 @@ export default async function WorkoutDetailPage({ params }: { params: Promise<{ 
           workoutId={session.id}
           configured={aiSettings.configured}
           model={aiSettings.model}
+          initialAnalysis={savedAnalysis}
         />
       ) : null}
 

@@ -10,14 +10,15 @@ interface WorkoutAnalysisCardProps {
   workoutId: string;
   configured: boolean;
   model: string;
+  initialAnalysis?: WorkoutAnalysisResult | null;
 }
 
 interface AnalysisError {
   error?: string;
 }
 
-export function WorkoutAnalysisCard({ workoutId, configured, model }: WorkoutAnalysisCardProps) {
-  const [analysis, setAnalysis] = useState<WorkoutAnalysisResult | null>(null);
+export function WorkoutAnalysisCard({ workoutId, configured, model, initialAnalysis = null }: WorkoutAnalysisCardProps) {
+  const [analysis, setAnalysis] = useState<WorkoutAnalysisResult | null>(initialAnalysis);
   const [state, setState] = useState<"idle" | "loading" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
 
