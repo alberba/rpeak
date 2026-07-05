@@ -49,10 +49,25 @@ export async function updateWorkoutNotesAction(workoutId: string, notes: string)
   await workouts.update(workoutId, user.id, { notes });
 }
 
-export async function finishWorkoutAction(workoutId: string): Promise<void> {
+/**
+ * `pausedMs` es el tiempo total que el entrenamiento estuvo en pausa (llevado en el
+ * cliente). Se descuenta desplazando `startedAt` hacia delante para que la duración
+ * calculada en el historial (finishedAt - startedAt) coincida con el tiempo activo
+ * mostrado durante el entrenamiento.
+ */
+export async function finishWorkoutAction(workoutId: string, pausedMs = 0): Promise<void> {
   const user = await requireUser();
   const { workouts } = getRepositories();
-  await workouts.update(workoutId, user.id, { finishedAt: new Date().toISOString() });
+  const session = await workouts.getById(workoutId, user.id);
+  if (!session) return;
+
+  const finishedAt = new Date();
+  const startedAt = pausedMs > 0 ? new Date(new Date(session.startedAt).getTime() + pausedMs) : null;
+
+  await workouts.update(workoutId, user.id, {
+    finishedAt: finishedAt.toISOString(),
+    ...(startedAt ? { startedAt: startedAt.toISOString() } : {}),
+  });
   revalidatePath("/historial");
   revalidatePath("/");
   redirect(`/historial/${workoutId}`);

@@ -21,10 +21,22 @@ create policy "workout_analyses_select_own" on public.workout_analyses
   for select using (auth.uid() = user_id);
 
 create policy "workout_analyses_insert_own" on public.workout_analyses
-  for insert with check (auth.uid() = user_id);
+  for insert with check (
+    auth.uid() = user_id
+    and exists (
+      select 1 from public.workout_sessions ws
+      where ws.id = workout_id and ws.user_id = auth.uid()
+    )
+  );
 
 create policy "workout_analyses_update_own" on public.workout_analyses
-  for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  for update using (auth.uid() = user_id) with check (
+    auth.uid() = user_id
+    and exists (
+      select 1 from public.workout_sessions ws
+      where ws.id = workout_id and ws.user_id = auth.uid()
+    )
+  );
 
 create policy "workout_analyses_delete_own" on public.workout_analyses
   for delete using (auth.uid() = user_id);

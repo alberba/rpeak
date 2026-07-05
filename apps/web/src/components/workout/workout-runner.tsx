@@ -30,7 +30,16 @@ import {
   updateExerciseNotes,
   type ExerciseLocator,
 } from "@/lib/workout-runtime";
-import { loadPauseState, loadRestState, savePauseState, saveRestState, type StoredPauseState, type StoredRestState } from "@/lib/workout-storage";
+import {
+  loadPauseState,
+  loadRestState,
+  loadSwapsState,
+  savePauseState,
+  saveRestState,
+  saveSwapsState,
+  type StoredPauseState,
+  type StoredRestState,
+} from "@/lib/workout-storage";
 import type { ExerciseSwap } from "@/app/entrenar/[id]/actions";
 import { formatRange, formatSeconds, formatWeight, pluralize } from "@/lib/format";
 import { cn } from "@/lib/cn";
@@ -58,7 +67,7 @@ export function WorkoutRunner({
   initialNow: string;
   exerciseNames: Record<string, string>;
   saveBlocksAction: (workoutId: string, blocks: WorkoutBlock[]) => Promise<void>;
-  finishWorkoutAction: (workoutId: string) => Promise<void>;
+  finishWorkoutAction: (workoutId: string, pausedMs?: number) => Promise<void>;
   updateNotesAction: (workoutId: string, notes: string) => Promise<void>;
   applyExerciseSwapsAction: (planId: string, swaps: ExerciseSwap[]) => Promise<void>;
 }) {
@@ -71,11 +80,12 @@ export function WorkoutRunner({
   const [editingSetId, setEditingSetId] = useState<string | null>(null);
   const [replacingLocator, setReplacingLocator] = useState<ExerciseLocator | null>(null);
   const [nameOverrides, setNameOverrides] = useState<Record<string, string>>({});
+  const [swaps, setSwaps] = useState<ExerciseSwap[]>([]);
   const [, startTransition] = useTransition();
   const activeStartedAtRef = useRef<string | null>(null);
   const skipInitialRestSaveRef = useRef(true);
   const skipInitialPauseSaveRef = useRef(true);
-  const swapsRef = useRef<ExerciseSwap[]>([]);
+  const skipInitialSwapsSaveRef = useRef(true);
 
   useEffect(() => {
     // Se lee tras hidratar para que el servidor y el primer render cliente coincidan.
@@ -83,6 +93,8 @@ export function WorkoutRunner({
     setRestState(loadRestState(workoutId));
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPauseState(loadPauseState(workoutId) ?? { pausedSince: null, totalPausedMs: 0 });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSwaps(loadSwapsState(workoutId));
     const id = setInterval(() => setNow(new Date().toISOString()), 1000);
     return () => clearInterval(id);
   }, [workoutId]);
@@ -102,6 +114,14 @@ export function WorkoutRunner({
     }
     savePauseState(workoutId, pauseState);
   }, [workoutId, pauseState]);
+
+  useEffect(() => {
+    if (skipInitialSwapsSaveRef.current) {
+      skipInitialSwapsSaveRef.current = false;
+      return;
+    }
+    saveSwapsState(workoutId, swaps);
+  }, [workoutId, swaps]);
 
   const isPaused = pauseState.pausedSince !== null;
   const pointer = useMemo(() => findNextPointer(session), [session]);
@@ -163,10 +183,8 @@ export function WorkoutRunner({
     const currentBlock = session.blocks[locator.blockIndex];
     const currentExercise = exerciseAt(currentBlock, locator.exerciseIndexInBlock);
     if (currentExercise.planExerciseId) {
-      swapsRef.current = [
-        ...swapsRef.current.filter((s) => s.planExerciseId !== currentExercise.planExerciseId),
-        { planExerciseId: currentExercise.planExerciseId, exerciseId: exercise.id },
-      ];
+      const planExerciseId = currentExercise.planExerciseId;
+      setSwaps((prev) => [...prev.filter((s) => s.planExerciseId !== planExerciseId), { planExerciseId, exerciseId: exercise.id }]);
     }
     const updated = replaceExercise(session, locator, exercise.id);
     setSession(updated);
@@ -196,18 +214,19 @@ export function WorkoutRunner({
 
   async function handleFinish() {
     if (!window.confirm("¿Finalizar el entrenamiento? Podrás verlo en el historial.")) return;
-    if (planId && swapsRef.current.length > 0) {
+    if (planId && swaps.length > 0) {
       const updatePlan = window.confirm("Has reemplazado ejercicios durante este entrenamiento. ¿Quieres actualizar también el plan con estos cambios?");
       if (updatePlan) {
         try {
-          await applyExerciseSwapsAction(planId, swapsRef.current);
+          await applyExerciseSwapsAction(planId, swaps);
         } catch {
           setSaveError("No se pudo actualizar el plan con los ejercicios reemplazados.");
         }
       }
     }
+    const finalPausedMs = pauseState.totalPausedMs + (pauseState.pausedSince ? Date.now() - new Date(pauseState.pausedSince).getTime() : 0);
     startTransition(() => {
-      finishWorkoutAction(workoutId).catch(() => setSaveError("No se pudo finalizar el entrenamiento. Inténtalo de nuevo."));
+      finishWorkoutAction(workoutId, Math.round(finalPausedMs)).catch(() => setSaveError("No se pudo finalizar el entrenamiento. Inténtalo de nuevo."));
     });
   }
 
@@ -325,7 +344,7 @@ export function WorkoutRunner({
               </div>
               {exercise.sets.map((set, setIndex) => {
                 const setPointer: WorkoutPointer = { blockIndex, exerciseIndexInBlock: exerciseIndex, setIndex };
-                const isActiveSet = isActiveExercise && active?.pointer.setIndex === setIndex && !isPaused;
+                const isActiveSet = isActiveExercise && active?.pointer.setIndex === setIndex;
                 if (isActiveSet) {
                   return (
                     <SetEntryCard
@@ -340,6 +359,7 @@ export function WorkoutRunner({
                       initialRpe={set.rpe}
                       onComplete={handleComplete}
                       onDelete={() => handleDeleteSet(setPointer, setIndex + 1)}
+                      disabled={isPaused}
                     />
                   );
                 }

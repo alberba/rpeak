@@ -10,12 +10,43 @@ export interface StoredPauseState {
   totalPausedMs: number;
 }
 
+export interface StoredExerciseSwap {
+  planExerciseId: string;
+  exerciseId: string;
+}
+
 function key(workoutId: string): string {
   return `rpeak:rest:${workoutId}`;
 }
 
 function pauseKey(workoutId: string): string {
   return `rpeak:pause:${workoutId}`;
+}
+
+function swapsKey(workoutId: string): string {
+  return `rpeak:swaps:${workoutId}`;
+}
+
+/**
+ * Persistencia local de los ejercicios reemplazados durante el entrenamiento, para
+ * poder seguir ofreciendo actualizar el plan al finalizar aunque se recargue la app.
+ */
+export function saveSwapsState(workoutId: string, swaps: StoredExerciseSwap[]): void {
+  if (typeof window === "undefined") return;
+  if (swaps.length > 0) window.localStorage.setItem(swapsKey(workoutId), JSON.stringify(swaps));
+  else window.localStorage.removeItem(swapsKey(workoutId));
+}
+
+export function loadSwapsState(workoutId: string): StoredExerciseSwap[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(swapsKey(workoutId));
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as StoredExerciseSwap[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }
 
 /** Persistencia local de la pausa en curso, para sobrevivir a cerrar/reabrir la app. */
