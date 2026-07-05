@@ -33,7 +33,7 @@ export function OpenRouterSettingsForm({ initial }: { initial: SettingsSummary }
     }
     setSummary(body);
     setApiKey("");
-    setStatus({ kind: "success", message: "Clave guardada y cifrada" });
+    setStatus({ kind: "success", message: apiKey.trim() ? "Clave guardada y cifrada" : "Modelo guardado" });
   }
 
   async function remove() {
@@ -88,7 +88,7 @@ export function OpenRouterSettingsForm({ initial }: { initial: SettingsSummary }
               onChange={(event) => setApiKey(event.target.value)}
               placeholder={summary.configured ? "Pega una clave para sustituir la actual" : "sk-or-v1-…"}
               className="pr-11 font-mono"
-              required
+              required={!summary.configured}
             />
             <button
               type="button"
@@ -134,9 +134,9 @@ export function OpenRouterSettingsForm({ initial }: { initial: SettingsSummary }
               Eliminar clave
             </Button>
           ) : <span />}
-          <Button type="submit" disabled={busy || apiKey.trim().length === 0}>
+          <Button type="submit" disabled={busy || (!summary.configured && apiKey.trim().length === 0)}>
             {status.kind === "saving" ? <LoaderCircle className="size-4 animate-spin" /> : null}
-            {summary.configured ? "Sustituir clave" : "Guardar clave"}
+            {summary.configured ? "Guardar cambios" : "Guardar clave"}
           </Button>
         </div>
       </form>
